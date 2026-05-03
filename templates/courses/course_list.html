@@ -2,29 +2,113 @@
 
 <div class="container mt-5">
 
-    <h1>Courses</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h1 class="fw-bold">
+                Courses
+            </h1>
+
+            <p class="text-muted mb-0">
+                Access your assigned learning content and videos.
+            </p>
+
+        </div>
+
+        <span class="badge bg-primary fs-6 p-2">
+            {{ user.role|title }}
+        </span>
+
+    </div>
 
     {% for course in courses %}
 
-        <div class="card shadow mt-4 p-4">
+        <div class="card shadow border-0 rounded-4 p-4 mb-4">
 
-            <h3>{{ course.title }}</h3>
+            <div class="d-flex justify-content-between align-items-center">
 
-            <p>{{ course.description }}</p>
+                <div>
 
-            <a href="{{ course.youtube_link }}"
-               target="_blank"
-               class="btn btn-primary">
+                    <h2 class="fw-bold mb-1">
+                        {{ course.title }}
+                    </h2>
 
-               Watch Video
+                    <p class="text-muted mb-0">
+                        {{ course.description }}
+                    </p>
 
-            </a>
+                </div>
+
+                <span class="badge bg-dark p-2">
+
+                    Created by:
+                    {{ course.trainer.username }}
+
+                </span>
+
+            </div>
+
+            <hr class="my-4">
+
+            <h4 class="mb-4">
+                Course Videos
+            </h4>
+
+            {% for video in course.videos.all %}
+
+                <div class="card border-0 bg-light p-3 mb-3 rounded-4">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h5 class="mb-1">
+                                {{ video.title }}
+                            </h5>
+
+                            <p class="text-muted mb-0">
+
+                                Added by:
+                                <strong>
+                                    {{ video.added_by.username }}
+                                </strong>
+
+                            </p>
+
+                        </div>
+
+                        <a href="{{ video.youtube_link }}"
+                           target="_blank"
+                           class="btn btn-primary">
+
+                           Watch Video
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <div class="alert alert-warning">
+
+                    No videos added yet.
+
+                </div>
+
+            {% endfor %}
 
         </div>
 
     {% empty %}
 
-        <p>No courses available.</p>
+        <div class="alert alert-info">
+
+            No courses available.
+
+        </div>
 
     {% endfor %}
 

@@ -29,6 +29,7 @@ def register_view(request):
         username = request.POST.get("username")
         email = request.POST.get("email")
         mobile = request.POST.get("mobile")
+        role = request.POST.get("role")
         password = request.POST.get("password")
 
         if CustomUser.objects.filter(username=username).exists():
@@ -38,6 +39,7 @@ def register_view(request):
             username=username,
             email=email,
             mobile=mobile,
+            role=role,
             password=password
         )
 

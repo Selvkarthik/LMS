@@ -7,6 +7,8 @@ from .models import Course
 def course_list(request):
     if request.user.role == 'student':
         courses = request.user.enrolled_courses.all()
+    elif request.user.role == 'trainer':
+        courses = Course.objects.filter(videos__added_by=request.user).distinct()
     else:
         courses = Course.objects.all()
     return render(request, 'courses/course_list.html', {'courses': courses})

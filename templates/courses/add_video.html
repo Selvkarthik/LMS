@@ -1,0 +1,49 @@
+{% include 'base/header.html' %}
+
+<div class="container mt-5">
+
+    <div class="card shadow border-0 rounded-4 p-4">
+
+        <h2 class="mb-4">
+
+            Add Video to {{ course.title }}
+
+        </h2>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="mb-3">
+
+                <label>Video Title</label>
+
+                <input type="text"
+                       name="title"
+                       class="form-control">
+
+            </div>
+
+            <div class="mb-3">
+
+                <label>YouTube Link</label>
+
+                <input type="url"
+                       name="youtube_link"
+                       class="form-control">
+
+            </div>
+
+            <button class="btn btn-primary">
+
+                Add Video
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% include 'base/footer.html' %}

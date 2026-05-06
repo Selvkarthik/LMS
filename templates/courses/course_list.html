@@ -39,14 +39,14 @@
                     </p>
 
                 </div>
+                {% if user.role == 'trainer' %}
+                    <a href="{% url 'add_video' course.id %}"
+                       class="btn btn-success mb-3">
 
-                <span class="badge bg-dark p-2">
+                       Add Video
 
-                    Created by:
-                    {{ course.trainer.username }}
-
-                </span>
-
+                    </a>
+                {% endif %}
             </div>
 
             <hr class="my-4">

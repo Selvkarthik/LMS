@@ -4,7 +4,6 @@ from django.conf import settings
 class Course(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    youtube_link = models.URLField()
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

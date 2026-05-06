@@ -40,7 +40,8 @@ def register_view(request):
             email=email,
             mobile=mobile,
             role=role,
-            password=password
+            password=password,
+            is_staff = False,
         )
 
         login(request, user)

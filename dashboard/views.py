@@ -14,7 +14,9 @@ def home(request):
             }
             )
     elif request.user.role == 'trainer':
-        return render(request, 'dashboard/trainer_dashboard.html')
+        return render(request, 'dashboard/trainer_dashboard.html', {
+            "course_count" : Course.objects.filter(videos__added_by=request.user).distinct().count()
+            })
     return render(request, 'dashboard/student_dashboard.html')
 
 @login_required

@@ -1,0 +1,47 @@
+{% include 'base/header.html' %}
+
+<div class="container mt-5">
+
+    <div class="card shadow border-0 rounded-4 p-4">
+
+        <h2 class="mb-4">
+            Add Course
+        </h2>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="mb-3">
+
+                <label>Course Title</label>
+
+                <input type="text"
+                       name="title"
+                       class="form-control">
+
+            </div>
+
+            <div class="mb-3">
+
+                <label>Description</label>
+
+                <textarea name="description"
+                          class="form-control"
+                          rows="4"></textarea>
+
+            </div>
+
+            <button class="btn btn-primary">
+
+                Create Course
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% include 'base/footer.html' %}

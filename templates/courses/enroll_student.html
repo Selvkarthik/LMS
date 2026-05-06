@@ -1,0 +1,50 @@
+{% include 'base/header.html' %}
+
+<div class="container mt-5">
+
+    <div class="card shadow border-0 rounded-4 p-4">
+
+        <h2 class="mb-4">
+
+            Enroll Student in {{ course.title }}
+
+        </h2>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="mb-3">
+
+                <label>Select Student</label>
+
+                <select name="student"
+                        class="form-control">
+
+                    {% for student in students %}
+
+                        <option value="{{ student.id }}">
+
+                            {{ student.username }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <button class="btn btn-primary">
+
+                Enroll Student
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% include 'base/footer.html' %}

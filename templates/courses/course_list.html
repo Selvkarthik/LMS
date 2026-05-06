@@ -11,7 +11,7 @@
             </h1>
 
             <p class="text-muted mb-0">
-                Access your assigned learning content and videos.
+                Access learning content and manage enrollments.
             </p>
 
         </div>
@@ -22,95 +22,245 @@
 
     </div>
 
-    {% for course in courses %}
+    {% if user.role == 'student' %}
 
-        <div class="card shadow border-0 rounded-4 p-4 mb-4">
+        <!-- MY COURSES -->
 
-            <div class="d-flex justify-content-between align-items-center">
+        <h2 class="mb-4">
+            My Courses
+        </h2>
 
-                <div>
+        {% for course in enrolled_courses %}
 
-                    <h2 class="fw-bold mb-1">
-                        {{ course.title }}
-                    </h2>
+            <div class="card shadow border-0 rounded-4 p-4 mb-4">
 
-                    <p class="text-muted mb-0">
-                        {{ course.description }}
-                    </p>
+                <h3 class="fw-bold">
+                    {{ course.title }}
+                </h3>
 
-                </div>
-                {% if user.role == 'trainer' %}
-                    <a href="{% url 'add_video' course.id %}"
-                       class="btn btn-success mb-3">
+                <p class="text-muted">
+                    {{ course.description }}
+                </p>
 
-                       Add Video
+                <hr>
 
-                    </a>
-                {% endif %}
-            </div>
+                <h5 class="mb-4">
+                    Course Videos
+                </h5>
 
-            <hr class="my-4">
+                {% for video in course.videos.all %}
 
-            <h4 class="mb-4">
-                Course Videos
-            </h4>
+                    <div class="card border-0 bg-light p-3 mb-3 rounded-4">
 
-            {% for video in course.videos.all %}
+                        <div class="d-flex justify-content-between align-items-center">
 
-                <div class="card border-0 bg-light p-3 mb-3 rounded-4">
+                            <div>
 
-                    <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-1">
+                                    {{ video.title }}
+                                </h5>
 
-                        <div>
+                                <p class="text-muted mb-0">
 
-                            <h5 class="mb-1">
-                                {{ video.title }}
-                            </h5>
+                                    Added by:
+                                    <strong>
+                                        {{ video.added_by.username }}
+                                    </strong>
 
-                            <p class="text-muted mb-0">
+                                </p>
 
-                                Added by:
-                                <strong>
-                                    {{ video.added_by.username }}
-                                </strong>
+                            </div>
 
-                            </p>
+                            <a href="{{ video.youtube_link }}"
+                               target="_blank"
+                               class="btn btn-primary">
+
+                               Watch Video
+
+                            </a>
 
                         </div>
 
-                        <a href="{{ video.youtube_link }}"
-                           target="_blank"
-                           class="btn btn-primary">
+                    </div>
 
-                           Watch Video
+                {% empty %}
 
-                        </a>
+                    <div class="alert alert-warning">
+
+                        No videos added yet.
 
                     </div>
 
+                {% endfor %}
+
+            </div>
+
+        {% empty %}
+
+            <div class="alert alert-info">
+
+                You are not enrolled in any course.
+
+            </div>
+
+        {% endfor %}
+
+        <!-- AVAILABLE COURSES -->
+
+        <h2 class="mb-4 mt-5">
+            Available Courses
+        </h2>
+
+        {% for course in available_courses %}
+
+            <div class="card shadow border-0 rounded-4 p-4 mb-4">
+
+                <h3 class="fw-bold">
+                    {{ course.title }}
+                </h3>
+
+                <p class="text-muted">
+                    {{ course.description }}
+                </p>
+
+                <a href="{% url 'self_enroll' course.id %}"
+                   class="btn btn-warning mt-2">
+
+                   Enroll
+
+                </a>
+
+            </div>
+
+        {% empty %}
+
+            <div class="alert alert-success">
+
+                You are enrolled in all available courses.
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        {% for course in courses %}
+
+            <div class="card shadow border-0 rounded-4 p-4 mb-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <h2 class="fw-bold mb-1">
+                            {{ course.title }}
+                        </h2>
+
+                        <p class="text-muted mb-0">
+                            {{ course.description }}
+                        </p>
+
+                    </div>
+
+                    <span class="badge bg-dark p-2">
+
+                        Created by:
+                        {{ course.created_by.username }}
+
+                    </span>
+
                 </div>
 
-            {% empty %}
+                <div class="mt-4">
 
-                <div class="alert alert-warning">
+                    {% if user.role == 'admin' %}
 
-                    No videos added yet.
+                        <a href="{% url 'enroll_student' course.id %}"
+                           class="btn btn-warning me-2">
+
+                           Enroll Student
+
+                        </a>
+
+                    {% endif %}
+
+                    {% if user.role == 'trainer' %}
+
+                        <a href="{% url 'add_video' course.id %}"
+                           class="btn btn-success">
+
+                           Add Video
+
+                        </a>
+
+                    {% endif %}
 
                 </div>
 
-            {% endfor %}
+                <hr class="my-4">
 
-        </div>
+                <h4 class="mb-4">
+                    Course Videos
+                </h4>
 
-    {% empty %}
+                {% for video in course.videos.all %}
 
-        <div class="alert alert-info">
+                    <div class="card border-0 bg-light p-3 mb-3 rounded-4">
 
-            No courses available.
+                        <div class="d-flex justify-content-between align-items-center">
 
-        </div>
+                            <div>
 
-    {% endfor %}
+                                <h5 class="mb-1">
+                                    {{ video.title }}
+                                </h5>
+
+                                <p class="text-muted mb-0">
+
+                                    Added by:
+                                    <strong>
+                                        {{ video.added_by.username }}
+                                    </strong>
+
+                                </p>
+
+                            </div>
+
+                            <a href="{{ video.youtube_link }}"
+                               target="_blank"
+                               class="btn btn-primary">
+
+                               Watch Video
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% empty %}
+
+                    <div class="alert alert-warning">
+
+                        No videos added yet.
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% empty %}
+
+            <div class="alert alert-info">
+
+                No courses available.
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
 
 </div>
 

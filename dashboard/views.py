@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from users.decorators import admin_required, trainer_required
 from users.models import CustomUser
-from courses.models import Course
+from courses.models import Course, EnrollmentRequest
 
 # Create your views here.
 @login_required
@@ -11,6 +11,7 @@ def home(request):
         return render(request, 'dashboard/admin_dashboard.html', {
                 "user_count": CustomUser.objects.count(),
                 "course_count": Course.objects.count(),
+                "pending_requests": EnrollmentRequest.objects.filter(approved=False)
             }
             )
     elif request.user.role == 'trainer':

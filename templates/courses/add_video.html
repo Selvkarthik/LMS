@@ -2,45 +2,80 @@
 
 <div class="container mt-5">
 
-    <div class="card shadow border-0 rounded-4 p-4">
+    <div class="row justify-content-center">
 
-        <h2 class="mb-4">
+        <div class="col-lg-7">
 
-            Add Video to {{ course.title }}
+            <div class="main-card p-5">
 
-        </h2>
+                <div class="mb-4">
 
-        <form method="post">
+                    <h1 class="page-title">
 
-            {% csrf_token %}
+                        Add Video
 
-            <div class="mb-3">
+                    </h1>
 
-                <label>Video Title</label>
+                    <p class="page-subtitle">
 
-                <input type="text"
-                       name="title"
-                       class="form-control">
+                        Upload protected learning content to
+                        {{ course.title }}
+
+                    </p>
+
+                </div>
+
+                <form method="post">
+
+                    {% csrf_token %}
+
+                    <div class="mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Video Title
+
+                        </label>
+
+                        <input type="text"
+                               name="title"
+                               class="form-control form-control-lg rounded-4"
+                               placeholder="Enter video title">
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            YouTube Video ID
+
+                        </label>
+
+                        <input type="text"
+                               name="youtube_link"
+                               class="form-control form-control-lg rounded-4"
+                               placeholder="Example: uQrJ0TkZlc">
+
+                        <small class="text-muted">
+
+                            Paste only the YouTube video ID.
+
+                        </small>
+
+                    </div>
+
+                    <button class="gradient-btn">
+
+                        Add Video
+
+                    </button>
+
+                </form>
 
             </div>
 
-            <div class="mb-3">
-
-                <label>YouTube Link</label>
-
-                <input type="url"
-                       name="youtube_link"
-                       class="form-control">
-
-            </div>
-
-            <button class="btn btn-primary">
-
-                Add Video
-
-            </button>
-
-        </form>
+        </div>
 
     </div>
 

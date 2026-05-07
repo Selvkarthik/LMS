@@ -123,3 +123,6 @@ STATIC_URL = "static/"
 AUTH_USER_MODEL = 'users.CustomUser'
 
 LOGIN_URL = '/login/'
+
+SESSION_COOKIE_AGE = 900
+SESSION_SAVE_EVERY_REQUEST = True

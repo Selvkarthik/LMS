@@ -2,46 +2,69 @@
 
 <div class="container mt-5">
 
-    <div class="card shadow border-0 rounded-4 p-4">
+    <div class="row justify-content-center">
 
-        <h2 class="mb-4">
+        <div class="col-lg-6">
 
-            Enroll Student in {{ course.title }}
+            <div class="main-card p-5">
 
-        </h2>
+                <div class="mb-4">
 
-        <form method="post">
+                    <h1 class="page-title">
 
-            {% csrf_token %}
+                        Enroll Student
 
-            <div class="mb-3">
+                    </h1>
 
-                <label>Select Student</label>
+                    <p class="page-subtitle">
 
-                <select name="student"
-                        class="form-control">
+                        Course:
+                        {{ course.title }}
 
-                    {% for student in students %}
+                    </p>
 
-                        <option value="{{ student.id }}">
+                </div>
 
-                            {{ student.username }}
+                <form method="post">
 
-                        </option>
+                    {% csrf_token %}
 
-                    {% endfor %}
+                    <div class="mb-4">
 
-                </select>
+                        <label class="form-label fw-semibold">
+
+                            Select Student
+
+                        </label>
+
+                        <select name="student"
+                                class="form-select form-select-lg rounded-4">
+
+                            {% for student in students %}
+
+                                <option value="{{ student.id }}">
+
+                                    {{ student.username }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <button class="gradient-btn">
+
+                        Enroll Student
+
+                    </button>
+
+                </form>
 
             </div>
 
-            <button class="btn btn-primary">
-
-                Enroll Student
-
-            </button>
-
-        </form>
+        </div>
 
     </div>
 

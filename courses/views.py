@@ -135,3 +135,12 @@ def approve_enrollment(request, request_id):
     enrollment_request.save()
 
     return redirect("admin_dashboard")
+
+@login_required
+def watch_video(request, video_id):
+    video = get_object_or_404(CourseVideo, id=video_id)
+    course = video.course
+    if request.user.role == "student":
+        if request.user not in course.assigned_students.all():
+            return redirect("courses")
+    return render(request, 'courses/watch_video.html', {'video': video})

@@ -1,0 +1,350 @@
+{% include 'base/header.html' %}
+
+<div class="container mt-5">
+
+    <div class="card shadow border-0 rounded-4 p-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <div>
+
+                <h2 class="fw-bold">
+                    {{ video.title }}
+                </h2>
+
+                <p class="text-muted mb-0">
+
+                    Added by:
+                    {{ video.added_by.username }}
+
+                </p>
+
+            </div>
+
+            <span class="badge bg-danger p-2">
+
+                Protected Content
+
+            </span>
+
+        </div>
+
+        <!-- VIDEO CONTAINER -->
+
+        <div class="position-relative overflow-hidden rounded-4">
+
+            <!-- PROTECTED OVERLAY -->
+
+            <div
+                style="
+                    position:absolute;
+                    inset:0;
+                    z-index:10;
+                    pointer-events:none;
+                    overflow:hidden;
+                "
+            >
+
+                <!-- DARK OVERLAY -->
+
+                <div
+                    style="
+                        position:absolute;
+                        inset:0;
+                        background:rgba(0,0,0,0.12);
+                    "
+                ></div>
+
+                <!-- MOVING WATERMARK -->
+
+                <div
+                    id="watermark"
+                    style="
+                        position:absolute;
+                        top:20%;
+                        left:10%;
+                        opacity:0.25;
+                        font-size:32px;
+                        font-weight:bold;
+                        color:white;
+                        transform:rotate(-20deg);
+                        transition:all 5s linear;
+                    "
+                >
+
+                    {{ user.username }}
+
+                </div>
+
+            </div>
+
+            <!-- VIDEO PLAYER -->
+
+            <div class="ratio ratio-16x9">
+
+                <iframe
+                    src="https://www.youtube.com/embed/{{ video.youtube_link }}"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="
+                        accelerometer;
+                        autoplay;
+                        clipboard-write;
+                        encrypted-media;
+                        gyroscope;
+                        picture-in-picture;
+                        web-share
+                    "
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen>
+
+                </iframe>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- PROTECTION OVERLAY -->
+
+<div id="protection-overlay"
+     style="
+        display:none;
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:black;
+        z-index:9999;
+        color:white;
+        justify-content:center;
+        align-items:center;
+        flex-direction:column;
+        font-size:32px;
+        font-weight:bold;
+     ">
+
+     <div id="warning-text">
+
+        Security Warning
+
+     </div>
+
+     <div class="mt-3 fs-5">
+
+        Excessive violations will log you out.
+
+     </div>
+
+</div>
+
+<script>
+
+    const overlay =
+        document.getElementById(
+            "protection-overlay"
+        );
+
+    const warningText =
+        document.getElementById(
+            "warning-text"
+        );
+
+    let warningCount = 0;
+
+    // MOVING WATERMARK
+
+    function moveWatermark() {
+
+        const watermark =
+            document.getElementById(
+                "watermark"
+            );
+
+        const topPos =
+            Math.random() * 70;
+
+        const leftPos =
+            Math.random() * 70;
+
+        watermark.style.top =
+            topPos + "%";
+
+        watermark.style.left =
+            leftPos + "%";
+
+    }
+
+    setInterval(moveWatermark, 5000);
+
+    // SHOW WARNING
+
+    function showProtectionWarning(message) {
+
+        warningCount++;
+
+        warningText.innerHTML =
+            message +
+            "<br><br>" +
+            "Warning Count: " +
+            warningCount +
+            " / 3";
+
+        overlay.style.display = "flex";
+
+        setTimeout(() => {
+
+            overlay.style.display = "none";
+
+        }, 2500);
+
+        // AUTO LOGOUT
+
+        if (warningCount >= 3) {
+
+            warningText.innerHTML =
+                "Too many violations detected.<br><br>Logging out...";
+
+            overlay.style.display = "flex";
+
+            setTimeout(() => {
+
+                window.location.href = "{% url 'logout' %}";
+
+            }, 2500);
+
+        }
+
+    }
+
+    // DISABLE RIGHT CLICK
+
+    document.addEventListener(
+        'contextmenu',
+        event => {
+
+            event.preventDefault();
+
+            showProtectionWarning(
+                "Right Click Disabled"
+            );
+
+        }
+    );
+
+    // DETECT INSPECT SHORTCUTS
+
+    document.addEventListener(
+        'keydown',
+        function(e) {
+
+            if (
+                e.key === 'F12' ||
+                (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+                (e.ctrlKey && e.key === 'u')
+            ) {
+
+                e.preventDefault();
+
+                showProtectionWarning(
+                    "Developer Tools Detected"
+                );
+
+            }
+
+        }
+    );
+
+    // DETECT PRINTSCREEN
+
+    document.addEventListener(
+        "keyup",
+        function(e) {
+
+            if (e.key === "PrintScreen") {
+
+                showProtectionWarning(
+                    "Screenshot Attempt Detected"
+                );
+
+            }
+
+        }
+    );
+
+    // DETECT TAB SWITCHING
+
+    document.addEventListener(
+        "visibilitychange",
+        function() {
+
+            if (document.hidden) {
+
+                showProtectionWarning(
+                    "Tab Switching Detected"
+                );
+
+            }
+
+        }
+    );
+
+    // DETECT WINDOW FOCUS LOSS
+
+    window.addEventListener(
+        "blur",
+        function() {
+
+            showProtectionWarning(
+                "Screen Activity Detected"
+            );
+
+        }
+    );
+
+    // DETECT FULLSCREEN EXIT
+
+    document.addEventListener(
+        "fullscreenchange",
+        function() {
+
+            if (!document.fullscreenElement) {
+
+                showProtectionWarning(
+                    "Fullscreen Exit Detected"
+                );
+
+            }
+
+        }
+    );
+
+    // DEVTOOLS DETECTION
+
+    setInterval(function() {
+
+        if (
+            window.outerWidth - window.innerWidth > 160 ||
+            window.outerHeight - window.innerHeight > 160
+        ) {
+
+            showProtectionWarning(
+                "Developer Tools Detected"
+            );
+
+        }
+
+    }, 1000);
+
+    // DISABLE TEXT SELECTION
+
+    document.body.style.userSelect = "none";
+
+</script>
+
+{% include 'base/footer.html' %}

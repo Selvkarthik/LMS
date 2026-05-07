@@ -71,8 +71,7 @@
 
                             </div>
 
-                            <a href="{{ video.youtube_link }}"
-                               target="_blank"
+                            <a href="{% url 'watch_video' video.id %}"
                                class="btn btn-primary">
 
                                Watch Video
@@ -226,8 +225,7 @@
 
                             </div>
 
-                            <a href="{{ video.youtube_link }}"
-                               target="_blank"
+                            <a href="{% url 'watch_video' video.id %}"
                                class="btn btn-primary">
 
                                Watch Video

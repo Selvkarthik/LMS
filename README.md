@@ -1,4 +1,4 @@
-<!-- Software Requirements Specification (SRS) 
+Software Requirements Specification (SRS) 
 Learning Management System (LMS) 
 Prepared for: LMS Project 
 Version: 1.0 

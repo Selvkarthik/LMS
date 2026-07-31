@@ -28,3 +28,4 @@ The LMS is a web-based application accessible via modern browsers.
 5. Non-Functional Requirements - Easy to use UI - Fast page loading - Scalable to 500+ users - Mobile responsive design 
 6. Assumptions & Constraints - Videos are hosted on YouTube - Complete prevention of screen recording is not possible - System focuses on deterrence and traceability 
 7. Proposal Summary - Development Time: 2–3 weeks - Technology: React + Node.js/Django + PostgreSQL - Deployment: Cloud-based  -->
+

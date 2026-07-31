@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Course Assistant</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+
+            background:#f4f6f9;
+
+            font-family:Arial, Helvetica, sans-serif;
+
+        }
+
+        .container{
+
+            width:80%;
+
+            max-width:900px;
+
+            margin:40px auto;
+
+            background:white;
+
+            padding:25px;
+
+            border-radius:10px;
+
+            box-shadow:0 0 10px rgba(0,0,0,.15);
+
+        }
+
+        h1{
+
+            text-align:center;
+
+            margin-bottom:25px;
+
+        }
+
+        textarea{
+
+            width:100%;
+
+            padding:15px;
+
+            resize:vertical;
+
+            font-size:16px;
+
+            border-radius:8px;
+
+            border:1px solid #ccc;
+
+        }
+
+        .buttons{
+
+            margin-top:15px;
+
+            display:flex;
+
+            gap:10px;
+
+        }
+
+        button{
+
+            padding:12px 25px;
+
+            border:none;
+
+            border-radius:8px;
+
+            cursor:pointer;
+
+            color:white;
+
+            background:#0d6efd;
+
+        }
+
+        a{
+
+            text-decoration:none;
+
+        }
+
+        .clear{
+
+            background:#dc3545;
+
+        }
+
+        .chat{
+
+            margin-top:30px;
+
+            display:flex;
+
+            flex-direction:column;
+
+            gap:20px;
+
+        }
+
+        .bubble{
+
+            padding:15px;
+
+            border-radius:12px;
+
+            max-width:80%;
+
+            white-space:pre-wrap;
+
+        }
+
+        .user{
+
+            align-self:flex-end;
+
+            background:#dbeafe;
+
+        }
+
+        .assistant{
+
+            align-self:flex-start;
+
+            background:#eeeeee;
+
+        }
+
+        .title{
+
+            font-weight:bold;
+
+            margin-bottom:8px;
+
+        }
+
+        .empty{
+
+            text-align:center;
+
+            color:gray;
+
+            margin-top:30px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🤖 AI Course Assistant</h1>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <textarea
+                name="question"
+                rows="5"
+                placeholder="Ask anything about your course..."
+        >{{ question }}</textarea>
+
+        <div class="buttons">
+
+            <button type="submit">
+
+                Ask AI
+
+            </button>
+
+            <a href="{% url 'clear_chat' %}">
+
+                <button
+                        type="button"
+                        class="clear">
+
+                    New Chat
+
+                </button>
+
+            </a>
+
+        </div>
+
+    </form>
+
+    <div class="chat">
+
+        {% for message in messages %}
+
+            {% if message.role == "user" %}
+
+                <div class="bubble user">
+
+                    <div class="title">
+
+                        👤 You
+
+                    </div>
+
+                    {{ message.content }}
+
+                </div>
+
+            {% else %}
+
+                <div class="bubble assistant">
+
+                    <div class="title">
+
+                        🤖 AI
+
+                    </div>
+
+                    {{ message.content }}
+
+                </div>
+
+            {% endif %}
+
+        {% empty %}
+
+            <div class="empty">
+
+                Ask your first question!
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

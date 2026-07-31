@@ -23,4 +23,5 @@ urlpatterns = [
     path('', include('dashboard.urls')),
     path('', include('users.urls')),
     path('', include('courses.urls')),
+    path("ai/", include("ai.urls")),
 ]
